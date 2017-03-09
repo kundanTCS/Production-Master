@@ -1,0 +1,10 @@
+<apex:page controller="TestController">
+{!out}
+<!-- 	
+	<apex:form >
+		<apex:inputText value="{!textField}" />
+		<apex:commandButton value="Do Something" action="{!doSomething}" immediate="true" />
+		<apex:outputText value="{!textField}" /> 
+	</apex:form>
+	-->
+</apex:page>

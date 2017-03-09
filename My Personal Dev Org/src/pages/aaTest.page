@@ -1,0 +1,20 @@
+<apex:page standardController="Contact">
+<html>
+ <head>
+  <style> 
+     body {font-family: Arial Unicode MS;}
+     .companyName {
+    font-weight:bold;
+    font-size:30px;
+    color:red}  
+  </style>
+ </head>
+  <center>
+  <h1>Announcing New Account Name!</h1>
+     <apex:panelGrid columns="1" width="100%">
+        <apex:outputText value="{!Contact.Name}" styleClass="companyName"/>
+        <apex:outputText value="{!NOW()}"></apex:outputText>
+     </apex:panelGrid>
+  </center>
+</html>
+</apex:page>

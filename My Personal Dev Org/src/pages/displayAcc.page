@@ -1,0 +1,6 @@
+<apex:page standardController="Account">
+
+<apex:relatedList list="cases"/>
+
+
+</apex:page>

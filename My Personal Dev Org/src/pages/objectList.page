@@ -1,0 +1,103 @@
+<apex:page controller="objectList" >
+<!--  <apex:pagemessage severity="info" detail="{!error_msg}" rendered="{!error}" />-->
+ <script src="https://na6.salesforce.com/servlet/servlet.FileDownload?file=01580000000dU2H&oid=00D80000000LCQq" type="text/javascript" language="javascript">
+</script >
+
+<apex:outputPanel id="ErrorSection">
+            <apex:Messages style="color:rgb(204,0,0);font-weight: bold;text-align:center" />
+        </apex:outputPanel>  
+
+<apex:form id="myform"  >
+<apex:pageBlock title="SmartCharts Generator" id="thePageBlock">
+       
+       
+       <apex:pageBlockSection columns="4" title="Object and Fields" id="theHeader" >
+       
+        <apex:outputText value="Select Object"></apex:outputText>
+      
+       <apex:outputText id="field" value="Select field"></apex:outputText>
+       
+       <apex:outputText value="Select Map Style"></apex:outputText>  
+       </apex:pageBlockSection>
+       
+       
+          <apex:pageBlockSection columns="6" id="theObject" >
+          
+   <!--         <apex:pageBlockSectionItem > 
+             <apex:outputText value="Select Object"></apex:outputText>
+          </apex:pageBlockSectionItem>  -->
+          <apex:outputPanel id="objectSection">
+         
+          <apex:pageBlockSectionItem >
+             <apex:selectList value="{!objectName}" size="3" title="Select Object">
+             <apex:selectOptions value="{!items}"/>
+             <apex:actionSupport event="onclick"   rerender="fieldSection,graphSection"/>
+             </apex:selectList><p/>
+          </apex:pageBlockSectionItem>
+          </apex:outputPanel>
+    
+ <!--         <apex:pageBlockSectionItem > 
+             <apex:outputText value="Select field"></apex:outputText>
+          </apex:pageBlockSectionItem>    -->
+           <apex:outputPanel id="fieldSection">
+          
+           <apex:pageBlockSectionItem rendered="{!objectName != ''}" id="theField">
+                 <apex:selectList value="{!fieldName}" size="3" > 
+                 <apex:selectOptions value="{!fields}"/>
+                 <apex:actionSupport event="onclick" rerender="mapSection,graphSection"/>   
+                 </apex:selectList><p/>
+          </apex:pageBlockSectionItem>
+          </apex:outputPanel>
+ 
+ <!--         <apex:pageBlockSectionItem > 
+             <apex:outputText value="Select Map Style"></apex:outputText>
+          </apex:pageBlockSectionItem>   --> 
+          <apex:outputPanel id="mapSection">   
+          
+          <apex:pageBlockSectionItem rendered="{!fieldName != ''}" id="theMap">
+                <apex:selectList value="{!mapSize}" multiselect="false" size="3">
+                <apex:selectOptions value="{!map}"/>
+          <!--        <apex:actionSupport event="onclick" action="{!googleMap}" rerender="a"/>  -->
+               <apex:actionSupport event="onclick" rerender="dateSection,graphSection"/>  
+                </apex:selectList><p/>
+         </apex:pageBlockSectionItem>   
+         </apex:outputPanel>          
+         </apex:pageBlockSection>
+         
+        <apex:outputPanel id="dateSection">       
+        <apex:pageBlockSection columns="3" title="Date and Time" id="thePageBlockSection" rendered="{!fieldName != ''}">
+                
+       <!--      <apex:outputText value="Start Date "></apex:outputText>
+                 <apex:inputText value="{!qryParam}" /><br/>
+    
+                 <apex:outputText value="End Date "></apex:outputText>
+                 <apex:inputText value="{!qryParam1}" /><br/>               -->
+                 
+                 <apex:outputText value="Start Date "></apex:outputText>
+                 <apex:inputtext value="{!qryParam}" required="false" id="theStartDate" onclick="NewCal('j_id0:myform:thePageBlock:thePageBlockSection:theStartDate','ddmmmyyyy',true,24);"/><br/>
+                 <apex:outputText value="End Date "></apex:outputText>
+                 <apex:inputtext value="{!qryParam1}" required="false" id="theEndDate" onclick="NewCal('j_id0:myform:thePageBlock:thePageBlockSection:theEndDate','ddmmmyyyy',true,24);"/><br/>                
+                 
+                 <apex:outputText value="Filter By "></apex:outputText>
+                 <apex:selectRadio value="{!dateValue}" >
+                <apex:selectOptions value="{!dateList}"/>
+                </apex:selectRadio><br/>
+                
+                <apex:commandButton value="Generate Chart" action="{!googleMap}" >
+                           <apex:commandButton value="View as PDF" action="{!seePDF}" oncomplete="window.open('{!chartData}','Download','width=600,height=400,resizable=yes ');"   / >          
+                <apex:actionSupport event="onclick" rerender="graphSection"/>
+                </apex:commandButton>
+                               
+       </apex:pageBlockSection>              
+       </apex:outputPanel>  
+       <apex:outputPanel id="graphSection">    
+          <apex:pageBlockSection title="Map" rendered="{!showthechart}">
+          
+          
+
+               <apex:image id="a" url="{!chartData}"></apex:image> 
+          </apex:pageBlockSection>        
+      </apex:outputPanel>
+ </apex:pageBlock>
+</apex:form>
+</apex:page>

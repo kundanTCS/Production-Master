@@ -1,0 +1,21 @@
+<apex:page controller="sampleCon1">
+	<script language="javascript" type="text/javascript">
+		function display()
+		{ 
+			alert('This is the Test Message');
+		}
+	</script>  
+
+	<apex:form >
+		<apex:selectList id="chooseColor" value="{!s1}" size="3" >
+			<apex:selectOptions value="{!items}"/>
+		</apex:selectList>
+		<br/><br/>
+		<apex:commandButton value="Test Button" rerender="out" action="{!test}" onclick="display()"/> 
+	</apex:form> 
+	
+	<apex:outputPanel id="out">
+	<!-- This Output Panel is refreshed and displayed on screen after Alert Dialog box -->
+	</apex:outputPanel>
+	
+</apex:page>

@@ -1,0 +1,19 @@
+<apex:page controller="cal" tabstyle="Lead">
+<apex:sectionHeader title="Date Button" />
+
+<script src="https://na6.salesforce.com/servlet/servlet.FileDownload?file=01580000000dU2H&oid=00D80000000LCQq" type="text/javascript" language="javascript">
+</script>
+<apex:form id="myform">
+<apex:pageBlock id="leadpgbk">
+
+<apex:pageBlockSection id="theLeadinfo">
+<apex:pageBlockSectionItem id="section">
+<apex:outputLabel value="Lead Expiration Date"  for="theLeadExpirationDate"/>
+<apex:inputtext value="{!inputLeadExpirationDate}" required="false" id="theLeadExpirationDate" onclick="NewCal('j_id0:myform:leadpgbk:theLeadinfo:section:theLeadExpirationDate','ddmmmyyyy',true,24);"/>
+</apex:pageBlockSectionItem>
+
+</apex:pageBlockSection>
+
+</apex:pageBlock>
+</apex:form>
+</apex:page>

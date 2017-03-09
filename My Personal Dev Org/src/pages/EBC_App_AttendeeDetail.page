@@ -1,0 +1,490 @@
+<apex:page controller="ebcController" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="false">
+<apex:stylesheet value="{!$Resource.s1styles}"/>
+<html ng-app="app">
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+      <meta name="apple-mobile-web-app-capable" content="yes"/>
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+      <meta name="format-detection" content="telephone=no"/>
+      <meta http-equiv="cleartype" content="on"/>
+      <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+      <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.fontawesome, 'font-awesome.min.css')}" />
+    </head>
+    <body ng-controller="appController">
+      <div ng-show="!showNoteEditor">
+        <header class="" ng-class="{'bg-opportunity' : result.Type__c =='Customer', 'bg-post' : result.Type__c =='Partner', 'bg-brand-1' : result.Type__c == 'Internal', 'bg-brand-4' : result.Type__c =='VIP'}">
+          <div class="grid bg-op-detail">
+            <div class="grid-cell size-12of12">
+              <div class="flag pam">
+                <div class="flag--image">
+                  <div class="sq-60">
+                    <img ng-src="{{ result.Contact__r.EBC_Photo_URL__c || result.User__r.SmallPhotoUrl || 'https://na10.salesforce.com/img/social/unknown_profile_pic.png?v=2' }}" alt="{{ result.Contact__r.Name || result.User__r.Name }}" class="sq-60 brc"/>
+                  </div>
+                  <div class="tc cb-shadow brs bg-brand-4 drk paxs mts">
+                    <span class="f5">{{ result.Type__c }}</span>  
+                  </div> 
+                </div>
+                <div class="flag--body pls text-truncate">
+                  <h1 class="f1 text-color-5 man">
+                    {{ result.Contact__r.Name || result.User__r.Name }}
+                  </h1>
+                  <h2 class="f3 text-color-5 opacity-40 man">
+                    {{ result.Contact__r.Title || result.User__r.Title }}
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <!-- Tabs -->
+        <div class="grid bg-1 mbs">
+          <ul class="man pan list-plain list-horizontal">
+            <li class="grid-cell size-4of12 border-bottom border-right tc tabBorder-default" ng-class="{'tabBorder-active' : attendeeTab == 'background'}">
+              <a href="javascript:void(0)" ng-click="attendeeTab='background'" class="size-full pam">
+                <span>Background</span>
+              </a>
+            </li>
+            <li class="grid-cell size-4of12 border-bottom border-right tc tabBorder-default" ng-class="{'tabBorder-active' : attendeeTab == 'flags'}">
+              <a href="javascript:void(0)" ng-click="attendeeTab='flags'" class="size-full pam">
+                <span>Red Flags</span>
+              </a>
+            </li>
+            <li class="grid-cell size-4of12 border-bottom tc tabBorder-default" ng-class="{'tabBorder-active' : attendeeTab == 'goals'}">
+              <a href="javascript:void(0)" ng-click="attendeeTab='goals'" class="size-full pam">
+                <span>Goals</span>
+              </a>
+            </li>
+          </ul>
+          <div class="paTab bg-tab pos-abs grid-cell size-full"></div>
+          <div class="paTab bg-tab-active pos-abs grid-cell size-4of12 cTrans" 
+            ng-class="{'pos-back' : attendeeTab == 'background', 'pos-flag' : attendeeTab == 'flags', 'pos-goal' : attendeeTab == 'goals'}"></div>
+        </div>
+        <!-- Tab Panels -->
+        <div class="grid phs scrollable h315" ng-switch="attendeeTab">
+          <div class="grid-cell size-12of12 fadeInAni" ng-switch-when="background" ng-bind-html="result.Background__c"></div>
+          <div class="grid-cell size-12of12 fadeInAni" ng-switch-when="flags" ng-bind-html="result.Red_Flags__c"></div>
+          <div class="grid-cell size-12of12 fadeInAni" ng-switch-when="goals" ng-bind-html="result.Goals__c"></div>
+        </div>
+        <div class="grid bg-1">
+          <div class="grid-cell size-12of12">
+            <a href="javascript:void(0)" class="size-full pam bg-primary-btn" ng-click="showNoteEditor = true;">
+              <div class="text-color-5 tc a-mid">Edit Notes</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid pos-abs note-editor cTrans bg-1 size-full ht-full" ng-show="showNoteEditor" ng-class="{'animateUp' : showNoteEditor}">
+        <div class="grid-cell size-12of12 pas">
+          <span class="tha">Default</span>
+          <textarea name="default" placeholder="Enter your comments here..." 
+            class="size-full phm pvm textarea textarea--default textarea--ph-1 textarea--focus-1"
+            ng-model="myComments" ng-keyup="startTimer()">
+          </textarea>
+        </div>
+        <div class="grid-cell size-12of12 pll mls pbs f5">
+          <div class="flag">
+            <div class="flag--image">
+              <span class="fa fa-clock-o phs"></span>
+            </div>
+            <div class="flag--body" ng-class="{'scale' : dateUpdated}">
+              <span>Last saved at {{ comment.LastModifiedDate | amDateFormat:'Do MMM h:mm A' }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="grid-cell size-12of12">
+          <a href="javascript:void(0)" ng-click="saveComments()" class="pam bg-primary-btn size-full">
+            <div class="text-color-5 tc a-mid">
+              Save and Done!
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="forceGlobalModalIndicator oneStyle oneOne" ng-show="showLoader">
+        <div class="modal-glass">&nbsp;</div>
+        <div class="indicatorContainer" role="alert">
+          <img class="spinnerIcon icon uiImage" alt="" 
+            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2M3B4IiBoZWlnaHQ9IjYzcHgiIHZpZXdCb3g9IjAgMCA2MyA2MyI+PHBhdGggZmlsbD0iI0ZGRiIgZD0iTTMxLjUwMSwxNi43ODF2LTQuODg2Yy0xMC43ODksMC0xOS41MzYsOC43NDUtMTkuNTM2LDE5LjUzNWMwLDEwLjc4OSw4Ljc0NywxOS41MzUsMTkuNTM2LDE5LjUzNWMxMC43ODgsMCwxOS41MzQtOC43NDYsMTkuNTM0LTE5LjUzNWMwLTUuMjE0LTIuMDQ5LTkuOTQ4LTUuMzc3LTEzLjQ1Mmw0LjcxOS00LjQ4M2M0LjQ0LDQuNjcxLDcuMTY4LDEwLjk4Myw3LjE2OCwxNy45MzdjMCwxNC4zODUtMTEuNjYyLDI2LjA0My0yNi4wNDIsMjYuMDQzYy0xNC4zODYsMC0yNi4wNDctMTEuNjU4LTI2LjA0Ny0yNi4wNDNjMC0xNC4zODgsMTEuNjYxLTI2LjA0NywyNi4wNDctMjYuMDQ3VjAuNWw5Ljc2Nyw4LjEzOUwzMS41MDEsMTYuNzgxeiIvPjwvc3ZnPg==" />
+          <div class="message" id="_gModal_Message">Saving...</div>
+        </div>
+      </div>
+
+        <!-- EBC_App_EBC_Summary -->
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/moment.min.js')}" />  
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/angular.min.js')}" />
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/angular-sanitize.min.js')}" />
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/safeApply.js')}" />
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/angular-moment.min.js')}" />
+      <script type="text/javascript">          
+          var myApp = angular.module('app', ["Scope.safeApply", "angularMoment", "ngSanitize"]);
+          myApp.controller('appController', function($scope, $interval){
+              $scope.att_id = "{!JSENCODE($CurrentPage.parameters.att_id)}";
+              console.log("EBC Attendee Detail Page");
+              // console.log($scope.att_id);
+              $scope.result = [];
+              $scope.showNoteEditor = false;
+              $scope.attendeeTab = "background";
+              $scope.myComments = "";
+              $scope.showLoader = false;
+              
+              ebcController.getAttendeeComment($scope.att_id, function(result,event){
+                  // var a = JSON.parse(result);
+                  console.log(result);                  
+                  result.LastModifiedDate = new Date(result.LastModifiedDate);
+                  $scope.comment = result;
+                  $scope.myComments = result.Comments__c;
+                  $scope.$safeApply();
+              },{ buffer: true, escape: false, timeout: 30000 });
+
+              $scope.saveComments = function(){
+                $scope.showLoader = true;
+                ebcController.setAttendeeComment($scope.comment.Id, $scope.myComments, function(result,event){
+                  $scope.showLoader = false;
+                  $scope.showNoteEditor = false;
+                  $scope.$safeApply();
+                },{ buffer: true, escape: false, timeout: 30000 });
+              };
+
+              ebcController.getAttendeeDetail2($scope.att_id, function(result,event){
+                console.log(result);
+                $scope.result = result;
+                $scope.$safeApply();
+              },{ buffer: true, escape: false, timeout: 30000 });
+
+              $scope.keyCount = 0;
+
+              $scope.startTimer = function(){
+                $scope.keyCount++;
+                $scope.dateUpdated = false;
+              }
+
+              var stopTime = $interval(timingFn,10000);
+
+              function timingFn(){
+                if($scope.keyCount > 0){
+                  console.log("Hola for the change");
+                  ebcController.setAttendeeComment($scope.comment.Id, $scope.myComments, function(result,event){
+                    $scope.comment.LastModifiedDate = new Date();
+                    $scope.dateUpdated = true;
+                    $scope.keyCount = 0;
+                    $scope.$safeApply();
+                  },{ buffer: true, escape: false, timeout: 30000 });
+                }
+              }
+
+          });
+          
+          
+      </script>
+      <style>
+        .mw-100{
+          max-width: 100px;
+        }
+
+        .bg-op-detail{
+          background-color: rgba(0,0,0,0.2);
+        }
+
+        .cTrans {
+          transition: all ease 0.8s;
+        }
+
+        .tabBorder-active {
+          border-bottom-color: #2A94D6;
+        }
+
+        .bg-tab-active{
+          background-color: #2A94D6;
+        }
+
+        .bg-tab{
+          background-color: rgba(0,0,0,.24);
+        }
+
+        .tabBorder-default {
+          border-color: #F0F1F2;
+        }
+
+        .paTab{
+          padding: 2px;
+        }
+
+        .pos-back{
+          left: 0%;
+        }
+
+        .pos-flag{
+          left: 33.3%;
+        }
+
+        .pos-goal{
+          left: 66.6%;
+        }
+
+        .h315{
+          height: 285px;
+        }
+
+        .scrollable{
+          overflow-y: scroll;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .note-editor{
+          top: 0px;
+        }
+
+        .note-editor textarea{
+          height: 420px;
+        }
+
+        .animateUp, .animateUp-add.animateUp-add-active{
+          -webkit-animation: flyUp ease-out 0.8s;
+          -moz-animation: flyUp ease-out 0.8s;
+          -o-animation: flyUp ease-out 0.8s;
+          -ms-animation: flyUp ease-out 0.8s;
+          animation: flyUp ease-out 0.8s;
+        }
+
+        .animateUp-remove.animateUp-remove-active{
+          -webkit-animation: flyDown ease-out 0.8s;
+          -moz-animation: flyDown ease-out 0.8s;
+          -o-animation: flyDown ease-out 0.8s;
+          -ms-animation: flyDown ease-out 0.8s;
+          animation: flyDown ease-out 0.8s;
+        }
+
+        @-webkit-keyframes flyUp {
+          0% {
+            top: 400px;
+            opacity: 0;
+          }
+
+          100% {
+            top: 0px;
+            opacity: 1;
+          }
+        }
+        
+        @keyframes flyUp {
+          0% {
+            top: 400px;
+            opacity: 0;
+          }
+
+          100% {
+            top: 0px;
+            opacity: 1;
+          }
+        }
+
+        @-webkit-keyframes flyDown {
+          0% {
+            top: 0px;
+            opacity: 1;
+          }
+
+          100% {
+            top: 400px;
+            opacity: 0;
+          }
+        }
+        
+        @keyframes flyDown {
+          0% {
+            top: 0px;
+            opacity: 1;
+          }
+
+          100% {
+            top: 400px;
+            opacity: 0;
+          }
+        }
+
+        .forceGlobalModalIndicator .modal-glass {
+          background-color: #000;
+          opacity: 0;
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          display: block;
+          z-index: 999;
+          margin-left: 40px;
+        }
+
+        .forceGlobalModalIndicator .indicatorContainer {
+          text-align: center;
+          background: #354452;
+          opacity: .9;
+          border-radius: 5px;
+          width: 110px;
+          height: 82px;
+          padding-top: 22px;
+          color: #ffffff;
+          top: 50%;
+          left: 0;
+          right: 0;
+          margin: -65px auto;
+          position: absolute;
+          z-index: 1000;
+          display: block;
+        }
+
+        .forceGlobalModalIndicator .indicatorContainer .icon.spinnerIcon {
+          -webkit-animation: loading-rotate linear .8s infinite;
+          -moz-animation: loading-rotate linear .8s infinite;
+          animation: loading-rotate linear .8s infinite;
+          -webkit-animation-fill-mode: forwards;
+          -moz-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+          background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9z…yNi4wNDctMjYuMDQ3VjAuNWw5Ljc2Nyw4LjEzOUwzMS41MDEsMTYuNzgxeiIvPjwvc3ZnPg==') no-repeat center center;
+          background-size: 100%;
+        }
+
+        .forceGlobalModalIndicator .indicatorContainer .icon {
+          color: #ffffff;
+          width: 36px;
+          height: 36px;
+        }
+
+        @-webkit-keyframes loading-rotate
+        {
+          0%{
+            -webkit-transform:rotate(0deg);
+          }
+          100%
+          {
+            -webkit-transform:rotate(360deg);
+          }
+        }
+        @-moz-keyframes loading-rotate{
+          0%{
+            transform:rotate(0deg);
+          }
+          100%{
+            transform:rotate(360deg);
+          }
+        }
+        @keyframes loading-rotate{
+          0%{
+            transform:rotate(0deg);
+          }
+          100%{
+            transform:rotate(360deg);
+          }
+        }
+
+        .fadeInAni {
+          -webkit-animation: fadeInAni ease-out 0.3s;
+          -moz-animation: fadeInAni ease-out 0.3s;
+          -o-animation: fadeInAni ease-out 0.3s;
+          -ms-animation: fadeInAni ease-out 0.3s;
+          animation: fadeInAni ease-out 0.3s;
+        }
+        .fadeInAni-remove {
+          -webkit-animation: fadeOutAni ease-out 0.3s;
+          -moz-animation: fadeOutAni ease-out 0.3s;
+          -o-animation: fadeOutAni ease-out 0.3s;
+          -ms-animation: fadeOutAni ease-out 0.3s;
+          animation: fadeOutAni ease-out 0.3s;
+        }
+
+       
+        @-webkit-keyframes fadeInAni {
+          0% {
+            opacity: 0;
+            filter: alpha(opacity=0);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+          }
+
+          100% {
+            opacity: 1;
+            -ms-filter: none;
+            filter: none;
+          }
+        }
+        
+        @keyframes fadeInAni {
+          0% {
+            opacity: 0;
+            filter: alpha(opacity=0);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+          }
+
+          100% {
+            opacity: 1;
+            -ms-filter: none;
+            filter: none;
+          }
+        }
+        
+        @-webkit-keyframes fadeOutAni {
+          0% {
+            opacity: 1;
+            -ms-filter: none;
+            filter: none;
+          }
+
+          100% {
+            opacity: 0;
+            filter: alpha(opacity=0);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+          }
+        }
+        
+        @keyframes fadeOutAni {
+          0% {
+            opacity: 1;
+            -ms-filter: none;
+            filter: none;
+          }
+
+          100% {
+            opacity: 0;
+            filter: alpha(opacity=0);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+          }
+        }
+
+        .scale {
+          -webkit-animation: scaleUp ease-out 0.8s;
+          -moz-animation: scaleUp ease-out 0.8s;
+          -o-animation: scaleUp ease-out 0.8s;
+          -ms-animation: scaleUp ease-out 0.8s;
+          animation: scaleUp ease-out 0.8s;
+        }
+        
+        @-webkit-keyframes scaleUp {
+          0% {
+            transform : scale(1.2);
+          }
+
+          100% {
+            transform : scale(1);
+          }
+        }
+        
+        @keyframes scaleUp {
+          0% {
+            transform : scale(1.2);
+          }
+
+          100% {
+            transform : scale(1);
+          }
+        }
+        
+        .cb-shadow{
+          box-shadow: 0 0 10px rgba(0,0,0,0.15);
+          -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+
+      </style>
+    </body>
+</html>
+
+</apex:page>

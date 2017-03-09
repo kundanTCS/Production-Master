@@ -1,0 +1,68 @@
+<apex:page controller="heena" >
+
+<apex:form id="myform"  >
+<apex:pageBlock title="Ad Types" id="thePageBlock">
+
+            <apex:outputText value="Print Ad Type (guide prices determined by heading): "></apex:outputText>
+                 <apex:selectRadio value="{!adValue}" >
+                <apex:selectOptions value="{!adType}"/>
+                <apex:actionSupport event="onclick" rerender="listing"/>  
+            </apex:selectRadio><br/>
+</apex:pageBlock>
+
+<apex:outputPanel id="listing">
+
+    
+<apex:pageBlock title="Listing" rendered="{!adValue== 'Listing'}">
+           
+           <apex:outputText >You have selected {!adValue}</apex:outputText>
+           <br/><br/>
+            <apex:outputText value="Listing Type"></apex:outputText>
+                 <apex:selectRadio value="{!listingTypeValue}" >
+                <apex:selectOptions value="{!listingType}"/>
+           </apex:selectRadio><br/>
+         
+            <apex:outputText value="Color"></apex:outputText>
+                 <apex:selectCheckboxes value="{!colorValue}" >
+                <apex:selectOptions value="{!colorList}"/>
+           </apex:selectCheckboxes><br/>
+                                 
+
+            <apex:outputText value="Font"></apex:outputText>
+                 <apex:selectRadio value="{!fontValue}" >
+                <apex:selectOptions value="{!fontList}"/>
+           </apex:selectRadio><br/>            
+
+</apex:pageBlock>
+
+<apex:pageBlock title="In Column Space" rendered="{!adValue== 'InColumnSpace'}">
+           
+            <apex:outputText >You have selected {!adValue}</apex:outputText>
+            <br/><br/>
+            <apex:outputText value="Listing Type"></apex:outputText>
+                 <apex:selectRadio value="{!listingTypeValue}" >
+                <apex:selectOptions value="{!listingType}"/>
+           </apex:selectRadio><br/>
+         
+            <apex:outputText value="Color"></apex:outputText>
+                 <apex:selectCheckboxes value="{!colorValue}" >
+                <apex:selectOptions value="{!colorList}"/>
+           </apex:selectCheckboxes><br/>
+                                 
+
+            <apex:outputText value="Font"></apex:outputText>
+                 <apex:selectRadio value="{!fontValue}" >
+                <apex:selectOptions value="{!fontList}"/>
+           </apex:selectRadio><br/>            
+
+</apex:pageBlock>
+</apex:outputPanel>
+<!-- 
+    <apex:outputPanel id="listing123" >
+                <apex:outputText value="Display Type"></apex:outputText>
+                <apex:outputText value="Color"></apex:outputText>
+    </apex:outputPanel>
+-->
+
+</apex:form>
+</apex:page>

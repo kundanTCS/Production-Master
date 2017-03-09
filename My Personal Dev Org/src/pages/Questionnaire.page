@@ -1,0 +1,24 @@
+<apex:page standardController="Account" showHeader="false" sidebar="false" id="myPage" pageStyle="color:#FFFFCC;">
+
+  <apex:form >
+
+	<apex:pageBlock title="Account Details">
+		<apex:pageBlockSection title="Account Details" columns="1" id="acc">
+			
+			<apex:inputField value="{!account.type}">
+				<apex:actionSupport event="onchange"   rerender="acc1, acc2"/>
+			</apex:inputField>
+		</apex:pageBlockSection>
+		
+		<apex:pageBlockSection title="Account State" columns="1" id="acc1" rendered="{!account.type == 'Prospect'}">
+			<apex:inputField value="{!account.billingstate}"/>
+		</apex:pageBlockSection>
+
+		<apex:pageBlockSection title="Account Country" columns="1" id="acc2" rendered="{!account.type != 'Prospect'}">
+			<apex:inputField value="{!account.billingstate}"/>
+		</apex:pageBlockSection>
+
+	</apex:pageBlock>
+		
+  </apex:form>
+</apex:page>

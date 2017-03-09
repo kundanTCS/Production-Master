@@ -1,0 +1,135 @@
+<apex:page controller="ebcController" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="false">
+<apex:stylesheet value="{!$Resource.s1styles}"/>
+<html ng-app="app">
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+      <meta name="apple-mobile-web-app-capable" content="yes"/>
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+      <meta name="format-detection" content="telephone=no"/>
+      <meta http-equiv="cleartype" content="on"/>
+      <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+      <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.fontawesome, 'font-awesome.min.css')}" />
+    </head>
+    <body ng-controller="appController">        
+        <div class="grid">
+            <!-- <div class="grid-cell size-12of12 pas bg-4">
+              <span class="wht">Coming up</span>
+            </div> -->
+            <div class="grid-cell size-12of12" ng-show="ebcToday.length > 0">
+                <ul class="list-plain man pan">
+                    <li class="border-bottom border--3" ng-repeat="item in ebcToday">
+                        <a href="javascript:void(0)" class="size-full pam" 
+                          ng-click="navSummary(item.id)">
+                          <div class="grid size-full">
+                            <div class="grid-cell size-8of12 text-truncate pvs">
+                              <span>{{ item.name }}</span>
+                            </div>
+                            <div class="grid-cell size-4of12">
+                              <div class="dt text-color-2">
+                                <div class="dtr size-full tr mbxs">
+                                  <div class="dtc">
+                                    <span class="fa fa-calendar-o phs"></span>
+                                  </div>
+                                  <div class="dtc">
+                                    <span>Today</span>
+                                  </div>
+                                </div>
+                                <div class="dtr size-full tr">
+                                  <div class="dtc">
+                                    <span class="fa fa-clock-o phs"></span>
+                                  </div>
+                                  <div class="dtc">
+                                    <span>{{ item.dateOfEvent | amDateFormat:'h:mm A' }}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="grid-cell size-12of12">
+                <ul class="list-plain man pan">
+                    <li class="border-bottom border--3" ng-repeat="item in result">
+                        <a href="javascript:void(0)" class="pam size-full" 
+                          ng-click="navSummary(item.id)">
+                          <div class="grid size-full">
+                            <div class="grid-cell size-8of12 text-truncate pvs">
+                              <span>{{ item.name }}</span>
+                            </div>
+                            <div class="grid-cell size-4of12">
+                              <div class="dt text-color-2">
+                                <div class="dtr size-full tr mbxs">
+                                  <div class="dtc">
+                                    <span class="fa fa-calendar-o phs"></span>
+                                  </div>
+                                  <div class="dtc">
+                                    <span>{{ item.dateOfEvent | amDateFormat:'Do MMM' }}</span>
+                                  </div>
+                                </div>
+                                <div class="dtr size-full tr">
+                                  <div class="dtc">
+                                    <span class="fa fa-clock-o phs"></span>
+                                  </div>
+                                  <div class="dtc">
+                                    <span>{{ item.dateOfEvent | amDateFormat:'h:mm A' }}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div ng-view=""></div>
+        <!-- EBC_App_EBC_Summary -->
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/moment.min.js')}" />  
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/angular.min.js')}" />
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/safeApply.js')}" />
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/angular-moment.min.js')}" />
+      <script type="text/javascript">          
+          var myApp = angular.module('app', ["Scope.safeApply", "angularMoment"]);
+          myApp.controller('appController', function($scope){
+              console.log("new appController");
+              $scope.result = [];
+              $scope.ebcToday = [];
+              ebcController.getEBCList(function(result,event){                  
+                  var today = new Date();
+                  today = moment(today);
+                  console.log(today);
+                  console.log(result);
+                  var a = JSON.parse(result);
+                  // console.log(a);
+                  var objd,diff;
+                  for (var i = a.length - 1; i >= 0; i--) {
+                    objd = new Date(a[i].dateOfEvent);                    
+                    diff = today.diff(objd, 'days');
+                    console.log("the difference between today and the retrieved dates\n");
+                    console.log(diff);
+                    if(diff == 0){
+                      $scope.ebcToday.push(a[i]);
+                    } else{
+                      $scope.result.push(a[i]);
+                    }
+                  };
+
+                  $scope.ebcToday.reverse();
+                  $scope.result.reverse();
+                  $scope.$safeApply();
+              },{ buffer: true, escape: false, timeout: 30000 });
+
+              $scope.navSummary = function(id){
+                var urlStr = '/apex/EBC_App_EBC_Summary?ebcid=' + id;
+                sforce.one.navigateToURL(urlStr);
+              }
+          });
+          
+          
+      </script>
+    </body>
+</html>
+
+</apex:page>

@@ -1,0 +1,12 @@
+<apex:page sidebar="false" showHeader="false">
+<h1>IRS Mileage Policy</h1>
+<p>The Internal Revenue Service 2008 standard mileage rate is 58.5 cents per mile.
+It is to be used for reimbursement requests for all mileage incurred on or after July 1,
+2008.</p>
+<apex:image id="irs_image"
+value="http://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/IRS.svg/120px-IRS.svg.png"/>
+
+<a href="https://na6.salesforce.com/secur/login_portal.jsp?orgId=00D80000000LCQq&portalId=06080000000Qw8y
+">Link text</a> 
+
+</apex:page>

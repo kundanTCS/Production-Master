@@ -1,0 +1,6 @@
+<apex:page controller="SalesSupportCustom"  sidebar="false" showHeader="false">
+    
+    <apex:detail relatedList="false" title="true"/>
+    <apex:relatedList subject="{!sample}" list="openActivities" />
+	<!-- Test -->
+</apex:page>

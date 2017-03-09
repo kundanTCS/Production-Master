@@ -1,0 +1,60 @@
+<apex:page standardController="Opportunity" extensions="myOpportunityExtension"   >
+<apex:messages />
+<apex:form >
+
+<apex:pageBlock >
+
+<apex:image id="theImage" value="{!imageurl}" width="300" height="100">&nbsp;</apex:image><br/><br/>
+<p align="center"><font size="10"><b>Application For Directory Advertising <br/>Product Information - Summary </b></font> </p><br/>
+
+<apex:outputText value="Time:  {!Today()} "/>
+
+</apex:pageBlock>
+<apex:pageBlock title="Customer Information" >
+<apex:pageBlockSection title="Account" columns="2">
+<apex:outputField value="{!acc.name}"/>
+<apex:outputField value="{!acc.BillingCity}"/>
+<apex:outputField value="{!acc.BillingCountry}"/>
+<apex:outputField value="{!acc.Phone}"/>
+<apex:outputField value="{!acc.Fax}"/>
+</apex:pageBlockSection>
+<apex:pageBlockSection title="Opportunity" columns="2">
+<apex:outputField value="{!opportunity.name}"/>
+<apex:outputField value="{!opportunity.CloseDate}"/>
+<apex:outputField value="{!opportunity.Amount}"/>
+<apex:outputField value="{!opportunity.StageName}"/>
+<apex:outputField value="{!opportunity.AccountId}"/>
+<apex:inputField value="{!opportunity.OrderNumber__c}"/>
+
+</apex:pageBlockSection>
+
+<apex:commandButton action="{!save}" value="Save" id="theButton"/>
+<apex:pageBlockSection title="Products" columns="3">
+
+<apex:dataTable value="{!product}" var="prod" id="productTable" cellPadding="4"  border="1">
+
+                                
+                  <!--  <apex:column >
+                  // <apex:facet name="header">Product Name</apex:facet>
+                   // <apex:outputText value="{!prod.Id}"/>
+              //  </apex:column>
+               -->
+                <apex:column >
+                    <apex:facet name="header">Product Quantity</apex:facet>
+                    <apex:outputText value="{!prod.quantity}"/>
+                </apex:column>
+
+                <apex:column >
+                    <apex:facet name="header">Product List Price</apex:facet>
+                    <apex:outputText value="{!prod.ListPrice}"/>
+                </apex:column>
+
+                        
+
+            </apex:dataTable>
+   </apex:pageBlockSection>
+         
+</apex:pageBlock>
+</apex:form>
+
+</apex:page>

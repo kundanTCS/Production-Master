@@ -1,0 +1,12 @@
+<apex:page controller="objectList" renderAs="pdf">
+
+<apex:pageBlock >
+          Hi Kundan
+<!--           <apex:pageBlockSection title="Map" >
+          <apex:image id="a" url="{!imgURL}"></apex:image>  
+          <apex:image id="a" url="{!chartData}"></apex:image> 
+          </apex:pageBlockSection>        -->
+      
+</apex:pageBlock>  
+   
+</apex:page>

@@ -1,0 +1,186 @@
+<apex:page showHeader="true" controller="ProjectStatusController" docType="html-5.0" >
+
+    <html lang="en">
+        <head>
+        <!-- Bootstrap -->
+        <!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet" media="screen"/>-->
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen"/> 
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>  
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        
+        </head>
+        <body>
+            <apex:form >
+            
+                <div class="container">
+                   
+                   <div class="form-group col-sm-10" style="color: Black; background-color: #e6e6ff; padding: 5px;">
+                        <apex:sectionHeader title="Projects" subtitle="Status Report"/>
+                   </div>
+
+                   <div class="form-group col-sm-2"  style="float: right; padding-right: 15px; color: Black; background-color: #e6e6ff; height:130px;">
+                        <br/><br/>
+                        <apex:commandButton action="{!save}" value="Save Project Status" id="theButton" styleClass="btn-default btn-md; form-control"/>
+                   </div>
+                   
+                   <div style="height:20px;" class="form-group col-sm-12"></div>    
+                       
+                   <div class="form-group col-sm-6">
+                        <font size="2" color="#54698d">YOUR NAME </font>
+                        <font size="3" color="Red">* </font>
+                        <br/>
+                        <apex:inputText html-placeholder="Enter name" styleClass="form-control" id="yourname"/>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <font size="2" color="#54698d">YOUR PROJECT </font>
+                        <font size="3" color="Red">* </font>
+                        <br/>
+              
+                             <apex:selectList value="{!project}" id="project" styleClass="form-control" size="1">
+                                <apex:selectOptions value="{!projectList}"/>
+                             </apex:selectList>
+                    </div>
+                   
+                    
+                   <div style="height:20px;"></div>   
+                    <br clear="all"/>
+                   <div  class="form-group col-sm-12" style="margin-top:20px; float:left;">
+                       <label>PROJECT STATUS</label> 
+                       <br/>
+                       <font size="2" color="#54698d">* Comments are required if the status is in YELLOW or RED </font>
+                   </div>
+                   <br clear="all"/>
+                   
+                   
+                   <div style="height:20px;" class="form-group col-sm-12"></div>   
+                       
+                   <div class="form-group col-sm-4">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">FINANCE </font>
+                             <br/>
+                         <apex:selectList value="{!finance}" id="finance" styleClass="form-control" size="1">
+                            <apex:selectOptions value="{!financeList}"/>
+                         </apex:selectList>
+                   </div>
+                   <div class="form-group col-sm-8">
+                       <label for="comment">&nbsp;</label>
+                           <apex:inputTextarea styleClass="form-control" rows="5" id="comment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                           <!--<textarea class="form-control" rows="5" id="comment" placeholder="Enter comments"></textarea>-->
+                   </div>
+                
+
+                   <div style="height:20px;" class="form-group col-sm-12"></div>   
+                       
+                   <div class="form-group col-sm-4">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">SCHEDULE</font>
+                             <br/>
+                         <apex:selectList value="{!schedule}" id="schedule" styleClass="form-control" size="1">
+                            <apex:selectOptions value="{!scheduleList}"/>
+                         </apex:selectList>
+                   </div>
+                   <div class="form-group col-sm-8">
+                       <label for="schedule">&nbsp;</label>
+                           <apex:inputTextarea styleClass="form-control" rows="5" id="scheduleComment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                           <!--<textarea class="form-control" rows="5" id="comment" placeholder="Enter comments"></textarea>-->
+                   </div>                
+
+                   <div style="height:20px;" class="form-group col-sm-12"></div>   
+                       
+                   <div class="form-group col-sm-4">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">EFFORT</font>
+                             <br/>
+                         <apex:selectList value="{!effort}" id="effort" styleClass="form-control" size="1">
+                            <apex:selectOptions value="{!effortList}"/>
+                         </apex:selectList>
+                   </div>
+                   <div class="form-group col-sm-8">
+                       <label for="effort">&nbsp;</label>
+                           <apex:inputTextarea styleClass="form-control" rows="5" id="effortComment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                           <!--<textarea class="form-control" rows="5" id="comment" placeholder="Enter comments"></textarea>-->
+                   </div>  
+                
+                   <div style="height:20px;" class="form-group col-sm-12"></div>   
+                       
+                   <div class="form-group col-sm-4">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">DESIGN AND ARCHITECTURE</font>
+                             <br/>
+                         <apex:selectList value="{!designAndArchitecture}" id="designAndArchitecture" styleClass="form-control" size="1">
+                            <apex:selectOptions value="{!designAndArchitectureList}"/>
+                         </apex:selectList>
+                   </div>
+                   <div class="form-group col-sm-8">
+                       <label for="designAndArchitecture">&nbsp;</label>
+                           <apex:inputTextarea styleClass="form-control" rows="5" id="designAndArchitectureComment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                           <!--<textarea class="form-control" rows="5" id="comment" placeholder="Enter comments"></textarea>-->
+                   </div> 
+
+
+                   <div style="height:20px;" class="form-group col-sm-12"></div>   
+                       
+                   <div class="form-group col-sm-4">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">CUSTOMER SATISFACTION</font>
+                             <br/>
+                         <apex:selectList value="{!customerSatisfaction}" id="customerSatisfaction" styleClass="form-control" size="1">
+                            <apex:selectOptions value="{!customerSatisfactionList}"/>
+                         </apex:selectList>
+                   </div>
+                   <div class="form-group col-sm-8">
+                       <label for="customerSatisfaction">&nbsp;</label>
+                           <apex:inputTextarea styleClass="form-control" rows="5" id="customerSatisfactionComment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                           <!--<textarea class="form-control" rows="5" id="comment" placeholder="Enter comments"></textarea>-->
+                   </div> 
+
+
+                   <div style="height:20px;" class="form-group col-sm-12"></div>   
+                       
+                   <div class="form-group col-sm-4">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">Alliance</font>
+                             <br/>
+                         <apex:selectList value="{!alliance}" id="alliance" styleClass="form-control" size="1">
+                            <apex:selectOptions value="{!allianceList}"/>
+                         </apex:selectList>
+                   </div>
+                   <div class="form-group col-sm-8">
+                       <label for="alliance">&nbsp;</label>
+                           <apex:inputTextarea styleClass="form-control" rows="5" id="allianceComment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                           <!--<textarea class="form-control" rows="5" id="comment" placeholder="Enter comments"></textarea>-->
+                   </div> 
+
+                   <div style="height:20px;" class="form-group col-sm-12"></div>   
+                       
+                   <div class="form-group col-sm-4">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">QA</font>
+                             <br/>
+                         <apex:selectList value="{!qa}" id="qa" styleClass="form-control" size="1">
+                            <apex:selectOptions value="{!qaList}"/>
+                         </apex:selectList>
+                   </div>
+                   <div class="form-group col-sm-8">
+                       <label for="qa">&nbsp;</label>
+                           <apex:inputTextarea styleClass="form-control" rows="5" id="qaComment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                           <!--<textarea class="form-control" rows="5" id="comment" placeholder="Enter comments"></textarea>-->
+                   </div> 
+
+                   <div class="form-group col-sm-12">
+                         <!--<label for="finance">Finance:</label>-->
+                         <font size="2" color="#54698d">ADDITIONAL COMMENTS</font>
+                             <br/>
+                        <apex:inputTextarea styleClass="form-control" rows="5" id="AdditionalComment" html-placeholder="Write a comment..." ></apex:inputTextarea>
+                   </div>
+
+                   <div style="float: right; padding-right: 15px;">
+                        <apex:commandButton action="{!save}" value="Save Project Status" id="theButton1" styleClass="btn-default btn-md; form-control" style="width:150px;"/>
+                   </div>
+                   
+                </div>
+            </apex:form>
+        </body>
+    </html>
+
+</apex:page>

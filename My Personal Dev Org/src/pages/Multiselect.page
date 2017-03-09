@@ -1,0 +1,45 @@
+<apex:page Controller="Multiselect">
+	<apex:sectionHeader title="Multi-select Picklist Example"/>
+	
+	<apex:outputpanel id="errorMessage">	
+	    <apex:outputPanel id="ErrorSection" rendered="{!flag==true}">
+			<apex:Messages style="color:rgb(204,0,0);font-weight: bold;text-align:left" />
+	    </apex:outputPanel>	
+    </apex:outputpanel>
+	
+	<apex:form id="testForm">
+		<apex:outputpanel id="adduserpanel">
+			<table>
+				<tr>	
+					<td>	
+						<apex:selectList value="{!countries}" multiselect="true" style="width:200px" size="5">
+							<apex:selectOptions value="{!items}"/>
+						</apex:selectList>
+					</td>
+					<td>
+						<apex:outputPanel id="in">
+							<table>
+								<br/>
+								<tr align="center">
+									<td><apex:commandButton value="Add" action="{!add}" ReRender="adduserpanel,errorMessage" status="status"/></td>
+								</tr>
+								<tr align="center">
+									<td><apex:commandButton value="Remove" action="{!remove}" rerender="adduserpanel,errorMessage" status="status"/></td>
+								</tr>
+							</table>
+						</apex:outputPanel>
+					</td>
+					<td>	
+						<apex:selectList value="{!countries1}" multiselect="true" style="width:200px" size="5">
+							<apex:selectOptions value="{!items1}"/>
+						</apex:selectList>
+					</td>
+				</tr>
+			</table>
+		</apex:outputpanel>
+
+		<apex:actionstatus id="status" > 
+			<apex:facet name="start"><img src="{!$Resource.LoadingImage}" style="width:30px;height:30px;"/></apex:facet>
+		</apex:actionstatus>			
+	</apex:form>
+</apex:page>

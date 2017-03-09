@@ -1,0 +1,15 @@
+<apex:page >
+    <html>
+        <body>
+        <!--
+        <br/><br/>
+        <embed src="{!$Resource.configAid}" width="200px" height="200px"></embed>
+        <br/><br/>
+        <applet archive="{!$Resource.configAid}" width="200px" height="200px"></applet>
+        
+        <br/><br/>
+        -->
+        <apex:iframe src="http://172.26.137.63:8080/web/guest/vision" scrolling="true" id="theIframe" height="500px" width="100%"/>
+        </body>
+    </html>
+</apex:page>

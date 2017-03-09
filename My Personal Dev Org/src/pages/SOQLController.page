@@ -1,0 +1,48 @@
+<apex:page controller="SOQLController" >
+<apex:pageBlock title="Test dynamic SOQL" id="thePageBlock">
+  <apex:form >
+  <apex:pageBlockSection columns="2" >
+      <apex:outputText value="Select Object to Query on   "></apex:outputText>
+    <apex:selectList value="{!objectName}" size="5">
+        <apex:selectOptions value="{!items}"/>
+        <apex:actionSupport event="onclick" rerender="thePageBlock"/>
+    </apex:selectList>
+   
+    </apex:pageBlockSection>
+    <apex:pageBlockSection rendered="{!objectName != ''}" columns="2" >
+    <apex:outputText value="Select field to filter on   "></apex:outputText>
+
+     <apex:selectList value="{!fieldName}" size="3" > 
+        <apex:selectOptions value="{!fields}"/>
+     </apex:selectList>
+
+     </apex:pageBlockSection>
+     <apex:pageBlockSection rendered="{!objectName != ''}" columns="2">
+      <apex:outputText value="Input value for field filter"></apex:outputText>
+
+        <apex:inputText value="{!qryParam}" />
+      </apex:pageBlockSection>
+
+    <apex:commandButton value="Query" action="{!query}" >
+        <apex:actionSupport event="onclick" rerender="theresultBlock"/>
+    </apex:commandButton>    
+  </apex:form>
+</apex:pageBlock>
+<apex:pageBlock title="Retrived Results" id="theresultBlock" rendered="{!renderResult}"   >
+  <apex:pageBlockSection >   
+   <apex:dataTable value="{!qr}" var="r">
+      <apex:column >
+          <apex:facet name="header">Id   </apex:facet>
+           <apex:outputText value="{!r.field1Value}" />
+      </apex:column>
+           <apex:column >
+          <apex:facet name="header">{!fieldName}</apex:facet>
+           <apex:outputText value="{!r.field2Value}" />
+      </apex:column>
+
+      </apex:dataTable>
+   </apex:pageBlockSection>
+
+</apex:pageBlock>
+
+</apex:page>

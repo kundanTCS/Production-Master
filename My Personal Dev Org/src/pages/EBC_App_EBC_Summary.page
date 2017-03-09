@@ -1,0 +1,252 @@
+<apex:page controller="ebcController" applyHtmlTag="false" applyBodyTag="false" showHeader="false" standardStylesheets="false">
+<apex:stylesheet value="{!$Resource.s1styles}"/>
+<html ng-app="app">
+    <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+      <meta name="apple-mobile-web-app-capable" content="yes"/>
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+      <meta name="format-detection" content="telephone=no"/>
+      <meta http-equiv="cleartype" content="on"/>
+      <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+      <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.fontawesome, 'font-awesome.min.css')}" />
+    </head>
+    <body ng-controller="appController">
+      <div class="grid phs">
+        <div class="grid-cell size-12of12 bg-chead wht brm pam mts border border--3">          
+          <div class="grid">
+            <div class="grid-cell size-12of12 text-trunctate tc mbs">
+              <span class="h4 caps">
+                {{ result.Name }}
+              </span>
+            </div>
+            <div class="grid-cell size-1of12"></div>
+            <div class="grid-cell size-4of12">
+              <div class="flag">
+                <div class="flag--image">
+                  <span class="fa fa-calendar-o phs"></span>
+                </div>
+                <div class="flag--body">
+                  <span>{{ result.Date_of_Event__c | amDateFormat:'Do MMM' }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="grid-cell size-2of12"></div>
+            <div class="grid-cell size-4of12">
+              <div class="flag">
+                <div class="flag--image">
+                  <span class="fa fa-clock-o phs"></span>
+                </div>
+                <div class="flag--body">
+                  <span>{{ result.Date_of_Event__c | amDateFormat:'h:mm A' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="grid phs">
+        <div class="grid-cell size-12of12 bg-4 pam mts br-top">
+          <a href="javascript:void(0)" class="size-full" ng-click="navAttendeeList()">
+            <span class="h3 caps fw-semibold wht">
+              Attendees <span ng-show="result.EBC_Attendee__r.length>2">2/{{ result.EBC_Attendee__r.length }}</span>
+            </span>
+            <div class="fr mrm">
+              <span class="text-color-5 fw-semibold">More</span>
+              <span class="fa fa-caret-right wht"></span>
+            </div>
+          </a>              
+        </div>
+        <div class="grid-cell size-12of12 bg-1 pvs br-bot">
+          <ul class="list-plain man pan">
+            <li ng-repeat="item in result.EBC_Attendee__r | limitTo:2" class="mhs">
+              <a href="javascript:void(0)" class="size-full" ng-click="navAttendee(item.Id)">
+                <div class="flag">
+                  <div class="flag--image">
+                    <div class="dib brc mbs border border--3" >
+                      <img ng-src="{{ item.User__r.SmallPhotoUrl || 'https://na10.salesforce.com/img/social/unknown_profile_pic.png?v=2' }}" alt="{{ item.User__r.Name }}" class="sq-44 brc" ng-if="item.User__r != undefined"/>
+                      <img ng-src="{{ item.Contact__r.EBC_Photo_URL__c || 'https://na10.salesforce.com/img/social/unknown_profile_pic.png?v=2' }}" alt="{{ item.Contact__r.Name }}" class="sq-44 brc" ng-if="item.Contact__r != undefined"/>
+                    </div>
+                  </div>
+                  <div class="flag--body pls">
+                    <div class="grid size-full">
+                      <div class="grid-cell size-8of12 text-truncate">
+                        <span>{{ item.Contact__r.Name || item.User__r.Name }}</span>
+                      </div>
+                      <div class="grid-cell size-4of12 paxs border brm tc cb-shadow"
+                        ng-class="{'bg-opportunity wht border--3' : item.Type__c=='Customer', 'bg-post wht border--3' : item.Type__c=='Partner', 'bg-brand-1 wht border--3' : item.Type__c == 'Internal', 'bg-brand-4 border--3' : item.Type__c=='VIP'}">
+                        <span class="f5">{{ item.Type__c }}</span>
+                      </div>
+                    </div>    
+                  </div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="grid phs">
+        <div class="grid-cell size-12of12 bg-4 pam mts br-top">
+          <a href="javascript:void(0)" class="size-full" ng-click="navEbc()">
+            <span class="h3 caps fw-semibold wht">Summary</span>
+            <div class="fr mrm">
+              <span class="text-color-5 fw-semibold">More</span>
+              <span class="fa fa-caret-right wht"></span>
+            </div>
+          </a>              
+        </div>
+        <div class="grid-cell size-12of12 bg-1 br-bot">
+            <article ng-repeat="(key, value) in summaryData">
+              <div class="mbs">
+                <div class="phm pvs">
+                  <span class="f3 fw-semibold text-color-3">{{ labelData.ebc_summary[key] }}</span>
+                </div>
+                <div class="phm">
+                  <span class="f3">{{ value }}</span>
+                </div>
+              </div>  
+            </article>
+        </div>
+      </div>
+      <div class="grid phs">
+        <div class="grid-cell size-12of12 bg-4 pam mts br-top">
+          <a href="javascript:void(0)" class="size-full">
+            <span class="h3 caps fw-semibold wht">Related to</span>
+          </a>              
+        </div>
+        <div class="grid-cell size-12of12 bg-1 br-bot">
+          <div class="dib">
+            <a href="javascript:void(0)" ng-click="navOpp()" class="size-full">
+              <div class="flag">
+                <div class="flag--image pas brc">
+                  <img src="/img/icon/t4/standard/opportunity_120.png" alt="{{ result.Opportunity__r.Name }}" class="sq-30 brc"/>
+                </div>
+                <div class="flag--body text-truncate mw-cell">
+                  <span>{{ result.Opportunity__r.Name }}</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="grid-cell size-12of12 bg-1">
+          <div class="dib">
+            <a href="javascript:void(0)" ng-click="navAccount()" class="size-full">
+              <div class="flag">
+                <div class="flag--image pas brc">
+                  <img src="/img/icon/t4/standard/account_120.png" alt="{{ result.Account__r.Name }}" 
+                    class="sq-30 brc"/>
+                </div>                
+                <div class="flag--body text-truncate mw-cell">
+                  <span>{{ result.Account__r.Name }}</span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+        <!-- /img/icon/t4/standard/opportunity_120.png         -->
+        <!-- EBC_App_EBC_Summary -->
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/moment.min.js')}" />  
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/angular.min.js')}" />
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/safeApply.js')}" />
+      <script type="text/javascript" src="{!URLFOR($Resource.angular, '/angular-moment.min.js')}" />
+      <script type="text/javascript">          
+          var myApp = angular.module('app', ["Scope.safeApply", "angularMoment"]);
+          myApp.filter('truncate', function(){
+            return function(str){              
+              if(str != undefined && str.length > 80){
+                return str.substring(0,80) + "...";
+              }
+            }
+          });
+          myApp.controller('appController', function($scope){
+              $scope.ebc_id = "{!JSENCODE($CurrentPage.parameters.ebcid)}";
+              // console.log("new appController");              
+              $scope.result = [];
+              $scope.resultData = [];
+              $scope.schemaData = [];
+              $scope.summaryData = {};
+
+              ebcController.getEBCSummary($scope.ebc_id, function(result,event){
+                // console.log("EBC SUMMARY");
+                delete result.Id;
+                // console.log(result);
+                $scope.summaryData = result;                  
+              }, { buffer: true, escape: false, timeout: 30000 });
+              
+              ebcController.getEBCLabelz(function(result,event){
+                // console.log("EBC Labelz");
+                // console.log(result);
+                var a = JSON.parse(result);
+                console.log(a);
+                $scope.labelData = a;
+              }, { buffer: true, escape: false, timeout: 30000 });
+            
+              ebcController.getEBCInfo2($scope.ebc_id, function(result,event){
+                  // console.log(result);
+                  // console.log(result.Date_of_Event__c, new Date(result.Date_of_Event__c));
+                  result.Date_of_Event__c = new Date(result.Date_of_Event__c);
+                  $scope.result = result;
+                  $scope.$safeApply();
+              },{ buffer: true, escape: false, timeout: 30000 });
+
+              $scope.navAccount = function(){
+                var urlStr = $scope.result.Account__r.Id;                
+                sforce.one.navigateToSObject(urlStr);
+              };
+
+              $scope.navOpp = function(){
+                var urlStr = $scope.result.Opportunity__r.Id;                
+                sforce.one.navigateToSObject(urlStr); 
+              };
+
+              $scope.navAttendee = function (id){
+                var urlStr = '/apex/EBC_App_AttendeeDetail?att_id=' + id;
+                // sforce.one.navigateToSObject(urlStr);
+                sforce.one.navigateToURL(urlStr);
+              };
+
+              $scope.navEbc = function(){
+                sforce.one.navigateToSObject($scope.ebc_id, 'chatter');
+              }
+
+              $scope.navAttendeeList = function(){
+                var urlStr = '/apex/EBC_App_AttendeeList?ebcid=' + $scope.ebc_id;
+                sforce.one.navigateToURL(urlStr);
+              }
+
+          });
+
+
+          
+          
+      </script>
+      <style>
+        .bg-chead{
+          background: #1378b7;
+        }
+
+        .w-60{
+          width: 60px;
+        }
+
+        .mw-cell{
+          max-width: 100px;
+        }
+
+        .br-top{
+          border-radius: 5px 5px 0px 0px;
+        }
+
+        .br-bot{
+          border-radius: 0px 0px 5px 5px;
+        }
+
+        .cb-shadow{
+          box-shadow: 0 0 10px rgba(0,0,0,0.15);
+          -webkit-box-shadow: 0 0 10px rgba(0,0,0,0.15);
+        }
+      </style>
+    </body>
+</html>
+
+</apex:page>

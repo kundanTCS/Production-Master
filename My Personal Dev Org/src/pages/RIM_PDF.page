@@ -1,0 +1,129 @@
+<apex:page renderas="pdf">
+<!-- 
+<head>
+    <style type="text/css" media="print">
+        @page {
+        margin-bottom: 20%;
+        @top-center {
+
+            content: element(header);
+        }
+        @bottom-left {
+            content: element(footer);
+
+        }
+        }
+        div.header {
+            padding: 10px;
+            
+            position: running(header);
+        }
+        div.footer {
+            padding: 5px; 
+            height : 50%;  
+            position: running(footer);
+        }
+        .pagenumber:before {
+        content: counter(page); 
+        }           
+            .pagecount:before { 
+            content: counter(pages);  
+        }               
+    </style>          
+</head>  
+
+    <div class="header" height="20%">        
+        <div>
+            Research in Motion Australia PTY Limited.
+        </div>  
+    </div>   
+    <div class="footer" height="60%">  
+        <div>
+            Page <span class="pagenumber"/> of <span class="pagecount"/>  
+        </div>   
+    </div> 
+-->
+
+<style type="text/css">
+	p.serif{font-family:"Times New Roman",Times,serif;}
+	p.sansserif{font-family:Arial,Helvetica,sans-serif;}
+</style>
+
+
+	<table border="0" width="100%">
+	  <tr>
+	    <td width="47%" class="serif">
+	    <ol>
+			<li>
+				<b><u>Term and Termination</u></b><br/>
+			    The term of this agreement shall be the the period as set out in description in the service.
+			    The term of this agreement shall be the the period as set out in description in the service.			
+			</li>
+			<br/>
+			<li>
+				<b><u>No-Hire/Non Solicitation</u></b><br/>
+			    The term of this agreement shall be the the period as set out in description in the service.
+			    The term of this agreement shall be the the period as set out in description in the service.			
+			</li>
+			<br/>
+			<li>
+				<b><u>No-Hire/Non Solicitation</u></b><br/>
+				<ol type="a">
+					<li>
+					RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants 
+					RIM Warrants RIM WarrantsRIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants  
+					</li>
+					<li>
+					RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants 
+					RIM Warrants RIM WarrantsRIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants  
+					</li>
+					<li>
+					RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants 
+					RIM Warrants RIM WarrantsRIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants  
+					</li>
+					
+				</ol>
+			</li>
+			<br/>
+			<li>
+				<b><u>Limitation of Liability</u></b><br/>
+				<ol type="a">
+					<li>
+					RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants 
+					RIM Warrants RIM WarrantsRIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants  
+					</li>
+					<li>
+					RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants 
+					RIM Warrants RIM WarrantsRIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants  
+					</li>
+					<li>
+					RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants 
+					RIM Warrants RIM WarrantsRIM Warrants RIM Warrants RIM Warrants RIM Warrants RIM Warrants  
+					</li>
+				</ol>
+			</li>
+
+		</ol>
+		    
+	    </td>
+	    <td width="6%" class="serif"></td>
+   	    <td width="47%" class="serif">
+			<div style="padding-left:60px;">	    
+			    The term of this agreement shall be the the period as set out in description in the service.
+			    The term of this agreement shall be the the period as set out in description in the service.   	    
+			    The term of this agreement shall be the the period as set out in description in the service.
+			    The term of this agreement shall be the the period as set out in description in the service.			    			    
+		    </div>
+   	   	<ol start="7">
+			<li>
+			    <b><u>Term and Termination</u></b><br/>
+			    The term of this agreement shall be the the period as set out in description in the service.
+			    The term of this agreement shall be the the period as set out in description in the service.   	    
+		    </li>
+	    </ol>
+   	    </td>
+	  </tr>
+	</table>
+
+
+</apex:page>

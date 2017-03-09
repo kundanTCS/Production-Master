@@ -1,0 +1,129 @@
+<apex:page controller="wrapperClassController"   >
+
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" /> 
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js" />
+
+        
+        <script type="text/javascript" language="javascript">
+                      
+           function statCnt(){
+              if(statCnt.count == undefined){
+                statCnt.count = 1;
+              }
+              else{
+                statCnt.count ++;
+              }
+            }
+            
+            $(document).ready(function(){
+                          
+               $('#AddButton').click(function(){ //on add input button click
+                    statCnt();
+                    var  cnt = statCnt.count;
+                    var dvname = 'mylist'+cnt;
+                  $('#mytable').append('<tr><td>First Name:<input type="text" name="conName[]" id="conName[]" /></td><td>Last Name <input type="text" name="conLastName[]" id="conLastName[]" /></td><td>Phone: <input type="text" name="conPhn[]" id="conPhn[]" /></td> <td>Pincode: <input type="text" name="Pinvalue[]" id="Pinvalue'+cnt+'"  onkeyup="javascript:getPincodeData(this.id,\''+dvname+'\');" /><div id="mylist'+cnt+'"></div></td></tr>');
+              });
+
+                });
+               function getPincodeData(Pinvalue,divId)
+               {
+                   var pinId =  Pinvalue;
+                   var   listDivId = divId;
+                   var inpData = document.getElementById(pinId).value;
+                   if(inpData.length >=3)
+                   {
+                      Visualforce.remoting.Manager.invokeAction(
+                            '{!$RemoteAction.wrapperClassController.searchPinData}',
+                            inpData, 
+                            function(result, event){
+                                if (event.status) {
+                                    var len = result.length;
+                                     if (len  == 0) {
+                                     document.getElementById(listId).style.display  = 'block';
+                                     document.getElementById(listDivId).innerHTML = 'No Results!';
+                                     } else { 
+                                     var showlist = "<ul>";
+                                     for (var i = 0; i< len ; i++) {
+                                         var nm = result[i].Name;
+                                         var pinMainId  = result[i].Id;
+                                         
+                                         showlist +=  "<li><a href='#' onclick='showSelected(\""+nm+"\",\""+pinId +"\",\""+listDivId+"\",\""+pinMainId+"\")'>"+nm+" </a> </li>";
+                                     }
+                                     showlist += "</ul>";
+                                     document.getElementById(listDivId).style.display  = 'block';
+                                     document.getElementById(listDivId).innerHTML = showlist;
+                                     }
+                                   
+                                } 
+                            }
+                        ); 
+                   }  // end of if >3
+                   else
+                   {
+                       document.getElementById(listDivId).innerHTML = '';
+                   }  
+               } 
+                   
+                function showSelected(val,did,listId,pinId)    
+                {
+                    //alert('==>'+val);
+                    document.getElementById(did).value= val;
+                    document.getElementById(listId).innerHTML = pinId;
+                    document.getElementById(listId).style.display  = 'none';
+                }
+                
+                function sendDataToSave()
+                {
+                     var pin = document.getElementsByName("Pinvalue[]");
+                     var fname = document.getElementsByName("conName[]");
+                     var lname = document.getElementsByName("conLastName[]");
+                     var phn = document.getElementsByName("conPhn[]");
+                     var pinData = '';
+                     var contactStr = '';
+                     var mainPinId = '';
+                     for (var i = 0; i < pin.length; i++) {
+                         mainPinId = document.getElementById('mylist'+i).innerHTML;
+                         contactStr +=  fname[i].value+','+lname[i].value+','+phn[i].value+','+mainPinId+'#';
+                     }
+                     
+                     //alert('s='+contactStr );
+                     Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.wrapperClassController.saveContactData}', 
+                        contactStr , 
+                        function(result, event){
+                            if (event.status) {
+                                console.log(result);
+                                refreshPage();
+                            } else if (event.type === 'exception') {
+                                document.getElementById("responseErrors").innerHTML = 
+                                    event.message + "<br/>\n<pre>" + event.where + "</pre>";
+                            } else {
+                                document.getElementById("responseErrors").innerHTML = event.message;
+                            }
+                        }
+                    );
+                                }   
+                
+          function refreshPage()
+          {
+              window.location.href=  '/003/o';
+          
+          }                                   
+        </script>
+    <apex:form >
+   
+<div id="mainContainer">
+              <input type="button"  value="Add more"  id="AddButton" />
+    <div id="responseErrors"> </div>
+                 <table width="100%" id="mytable" >
+                     <tr>
+                         <td>First Name:<input type="text" name="conName[]" id="conName[]" /></td>
+                         <td>Last Name:<input type="text" name="conLastName[]" id="conLastName[]" /></td>
+                         <td>Phone:<input type="text" name="conPhn[]" id="conPhn[]" /></td>
+                         <td>Pincode:<input type="text" name="Pinvalue[]" id="Pinvalue"  class="srchInput" onkeyup="javascript:getPincodeData(this.id,'mylist0');" /><div id="mylist0"></div> <div id="pinMainDivID" style="display:block;"> </div></td>
+                     </tr>
+                    </table>
+                    <input type="button" value="Save" onclick="sendDataToSave(); return false;"/>
+             </div>
+    </apex:form>
+</apex:page>

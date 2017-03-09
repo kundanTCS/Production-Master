@@ -1,0 +1,12 @@
+<apex:page controller="objectList"  >
+<!--
+<apex:pageBlock >
+          
+          <apex:pageBlockSection title="Map" rendered="{!fieldName != ''}"> -->
+                 <apex:image id="a" rendered="{!fieldName != ''}" url="{!chartData}"></apex:image> 
+<!--
+          </apex:pageBlockSection>        
+      
+</apex:pageBlock>  
+   -->
+</apex:page>

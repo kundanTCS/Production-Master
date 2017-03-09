@@ -1,0 +1,59 @@
+<apex:page controller="dbMarketing" tabStyle="Marketing_review__tab" sidebar="true">
+<!--          <apex:sectionHeader title="Marketing Review list with Paging"></apex:sectionHeader>-->
+        <apex:form >
+            
+            
+            <apex:pageBlock title="Select Value" id="pageBlock1">
+                    <apex:outputpanel id="outpanel1">
+                    <table width="100%">
+                          <tr>
+                                 <td width="5%"><apex:outputLabel value="View:" StyleClass="labelCol"/></td>
+                                 <td width="10%"><apex:selectList value="{!listValue}" multiselect="false" size="1">
+                                                 <apex:selectOptions value="{!List}"/>
+                                                 </apex:selectList>
+                                 </td>
+          
+                                  <td width="85%"><apex:commandButton value="Go!" action="{!ViewData}">
+                                                 <apex:actionSupport event="onclick" rerender="pageBlock"/>            
+                                                 </apex:commandButton>
+                                 </td>  
+                          </tr> 
+
+
+
+                    </table> 
+                    </apex:outputpanel>                                
+            </apex:pageBlock>
+       
+            
+            
+            <apex:pageBlock title="List of MRG cases" id="pageBlock">
+            
+
+                  <apex:pageBlockButtons location="top">
+                    <apex:commandButton value="New" action="{!newButton}" id="theButton" rerender="pageBlock" rendered="{!New}"></apex:commandButton>
+                </apex:pageBlockButtons>                   
+            
+                <apex:pageMessages ></apex:pageMessages> 
+            
+                <apex:pageBlockTable value="{!accounts}" var="rev" rendered="{!NOT(ISNULL(accounts))}" rows="{!PageSize}">
+                            
+                            <apex:column headerValue="Case No." ><apex:outputText value="{!rev.Document_Number__c}"> </apex:outputText> </apex:column>
+                            <apex:column ><apex:facet name="header">Document Name</apex:facet><apex:outputLink value="/{!rev.Id}" target="_blank">{!rev.Name}</apex:outputLink></apex:column>
+                            <apex:column headerValue="Created By" ><apex:outputText value="{!rev.CreatedBy.Name}"> </apex:outputText> </apex:column>
+                            <apex:column headerValue="Last Modified By" ><apex:outputText value="{!rev.LastModifiedBy.Name}"> </apex:outputText> </apex:column>
+                            <apex:column headerValue="Owner of Document"><apex:outputText value="{!rev.Owner_Of_Document__r.Name}"> </apex:outputText> </apex:column>
+                            <apex:column headerValue="Owner Last Name"><apex:outputText value="{!rev.Owner.LastName}"> </apex:outputText> </apex:column>
+                            <apex:column headerValue="Approval Status"><apex:outputText value="{!rev.Approval_status__c}"> </apex:outputText> </apex:column>                             
+                            
+                </apex:pageBlockTable>
+
+                <div align="right" style="display:{!IF(NOT(ISNULL(accounts)),'block','none')}">
+                <br/>
+                            <font size="1pt">Page #:&nbsp;<apex:outputLabel value="{!PageNumber}"/>&nbsp;out of&nbsp;<apex:outputLabel value="{!totalPageNumber}"/>&nbsp;&nbsp;&nbsp;&nbsp;</font>
+                            <apex:commandButton value="Previous" action="{!previousBtnClick}" disabled="{!previousButtonEnabled}" reRender="pageBlock"></apex:commandButton>
+                            <apex:commandButton value="Next" action="{!nextBtnClick}" reRender="pageBlock" disabled="{!nextButtonDisabled}" ></apex:commandButton>
+                </div>
+            </apex:pageBlock>
+        </apex:form>
+</apex:page>

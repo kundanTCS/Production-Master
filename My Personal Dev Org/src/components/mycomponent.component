@@ -1,0 +1,6 @@
+<apex:component >
+     
+    <h1 style="color:red">
+        <apex:outputText value="Sharayu"/>
+    </h1>
+</apex:component>

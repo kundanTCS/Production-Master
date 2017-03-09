@@ -1,0 +1,19 @@
+<apex:page controller="dateController">
+  <apex:form >
+ <apex:pageBlock >
+     <apex:pageBlockSection columns="2">
+     
+      <apex:outputText value="Input Date in Format YYYY-MM-DD"></apex:outputText>
+        <apex:inputText value="{!qryParam}" />
+    
+    <apex:outputText value="Input Date in Format YYYY-MM-DD"></apex:outputText>
+        <apex:inputText value="{!qryParam1}" />
+        
+      </apex:pageBlockSection>
+
+      <apex:commandButton value="Query" action="{!query}" >
+        <apex:actionSupport event="onclick" />
+      </apex:commandButton>
+ </apex:pageBlock>     
+   </apex:form>           
+</apex:page>

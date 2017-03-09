@@ -1,0 +1,4 @@
+<apex:page standardController="Account" >
+<apex:relatedList id="activeContacts" list="Contacts" title="Contacts">
+</apex:relatedList>
+</apex:page>

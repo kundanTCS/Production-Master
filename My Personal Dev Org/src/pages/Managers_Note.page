@@ -1,0 +1,7 @@
+<apex:page standardController="Task" extensions="taskController">
+    <apex:pageBlock title="Manager Task">
+        <apex:pageBlockTable value="{!t}" var="item">
+            <apex:column value="{!item.subject}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>    
+</apex:page>

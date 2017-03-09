@@ -1,0 +1,11 @@
+<apex:page standardController="Attachment" extensions="documentExt">
+<apex:messages />
+    <apex:form id="theForm">
+        <apex:pageBlock >
+            <apex:pageBlockSection >
+                <apex:inputFile value="{!attachment.body}" filename="{!attachment.name}"/>
+                <apex:commandButton value="Save" action="{!save}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

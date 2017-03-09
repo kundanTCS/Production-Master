@@ -1,0 +1,117 @@
+<apex:page controller="wrapperClassController"   >
+
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" /> 
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js" />
+<link href='//fonts.googleapis.com/css?family=Roboto:100,700,400,300' rel='stylesheet' type='text/css'/>
+
+        
+        <script type="text/javascript" language="javascript">
+            function removeNone(){
+                $("option[value='']").remove();
+            }
+            
+           function statCnt(){
+              if(statCnt.count == undefined){
+                statCnt.count = 1;
+              }
+              else{
+                statCnt.count ++;
+              }
+            }
+            
+            var queryTerm;
+            $(document).ready(function(){
+            
+                $(".Rem option[value='']").remove();
+               
+               $('#AddButton').click(function(){ //on add input button click
+                    statCnt();
+                    var  cnt = statCnt.count;
+                  $('#mytable').append('<tr><td> <input type="text" name="" id="conName[]" /></td><td> <input type="text" name="" id="conLastName[]" /></td><td> <input type="text" name="" id="conPhn[]" /></td> <td> <input type="text" name="" id="Pinvalue'+cnt+'"  class="srchInput" /></td></tr>');
+              });
+
+                
+                 $("input[id^='Pinvalue']").autocomplete({
+                        minLength: 3,           
+                        source: function(request, response) {
+                        queryPin = request.term;
+                         Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.wrapperClassController.searchPinData}',
+                        request.term,
+                        function(result, event)
+                        {                            
+                            if(event.type == 'exception') {
+                                        } else {    
+                                            searchPin = result;
+                                            alert(result);
+                                            console.log(searchPin);
+                                            response(searchPin);
+                                        }
+                                    });                     
+                                    return false;                       
+                               },
+                        
+                        select: function( event, ui ) {            
+                                $('[id$=Pinvalue]').val(ui.item.Name); 
+                               
+                                return false;
+                             },
+                     })
+                     .data( "autocomplete" )._renderItem = function( ul, item ) {         
+                        var entry = "<a href='#'>"+ item.Name;           
+                        entry = entry+"</a>";
+                        return $( "<li></li>" )
+                            .data( "item.autocomplete", item )
+                            .append(entry)
+                            .appendTo( ul );
+                    };
+                    
+                });        
+                    
+        </script>
+
+
+
+    <apex:form >
+    <!--
+    <apex:pageBlock >
+        
+        <apex:pageBlockTable id="pgblk" value="{!contactList}" var="c">
+            <apex:column headerValue="Contact First Name">
+                <apex:inputField value="{!c.con.FirstName}"/>
+            </apex:column>
+            <apex:column headerValue="Contact Last Name">
+                <apex:inputField value="{!c.con.LastName}"/>
+            </apex:column>
+            <apex:column headerValue="Contact Phone">
+                <apex:inputField value="{!c.con.phone}"/>
+            </apex:column>
+            <apex:column headerValue="Pin Code">
+                <input type="text" value="{!c.pinCode}" id="Pinvalue" class="srchInp" />
+            </apex:column>
+            </apex:pageBlockTable>
+
+           
+        <apex:pageBlockButtons >
+            <apex:commandButton value="Add Contacts Row" action="{!addContact}" reRender="pgblk" />
+            <apex:commandButton value="Save Contacts" action="{!saveContact}"/>
+        </apex:pageBlockButtons>
+    
+          
+        
+    </apex:pageBlock>
+    -->
+<div id="mainContainer">
+              <input type="button"  value="Add more"  id="AddButton" />
+
+                 <table width="100%" id="mytable" >
+                     <tr>
+                         <td>First Name:<input type="text" name="" id="conName[]" /></td>
+                         <td>Last Name:<input type="text" name="" id="conLastName[]" /></td>
+                         <td>Phone:<input type="text" name="" id="conPhn[]" /></td>
+                         <td>Pincode:<input type="text" name="" id="Pinvalue"  class="srchInput" /></td>
+                     </tr>
+                    </table>
+                
+             </div>
+    </apex:form>
+</apex:page>

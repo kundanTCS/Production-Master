@@ -1,0 +1,7 @@
+<apex:page sidebar="false" showheader="false" tabStyle="flash__tab">
+<a href="/secur/logout.jsp">Logout</a>
+<apex:flash src="http://www.adobe.com/devnet/flash/samples/drawing_1/1_coordinates.swf"
+height="300" width="100%" />
+<br/><br/><br/>
+<apex:iframe src="http://www.salesforce.com" scrolling="true" id="theiFrame" height="200px" width="900px"/>
+</apex:page>

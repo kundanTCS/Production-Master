@@ -1,0 +1,44 @@
+<apex:page controller="BulkDownload" cache="true" contentType="text/csv#File.csv" language="en-US">
+
+    <apex:outputText value="Id"/><apex:outputText value="{!COMMA}"/>
+    <apex:outputText value="Name"/><apex:outputText value="{!COMMA}"/>
+    <apex:outputText value="Type"/><apex:outputText value="{!COMMA}"/>
+    <apex:outputText value="Phone"/>
+    <apex:outputText value="{!CRLF}"/>
+
+    <apex:repeat value="{!innerList}" var="iList" id="theInnerList">
+        <apex:repeat value="{!iList.sList}" var="i" id="theInnerStringList">
+            <apex:outputText value="{!i}" /><apex:outputText value="{!COMMA}"/>
+        </apex:repeat>
+        <apex:outputText value="{!CRLF}"/>
+    </apex:repeat>
+    
+    
+    
+    <!--
+    <apex:outputText value="Name"/><apex:outputText value="{!COMMA}"/>
+
+    <apex:outputText value="Type"/><apex:outputText value="{!COMMA}"/>
+
+    <apex:outputText value="Phone"/>
+
+    <apex:outputText value="{!CRLF}"/>
+
+
+///contentType="text/csv#File.csv"
+
+    <apex:repeat value="{!tList}" var="t">
+
+        <apex:outputText value="{!tList[t].Name}"/><apex:outputText value="{!COMMA}"/>
+
+        <apex:outputText value="{!tList[t].Type}"/><apex:outputText value="{!COMMA}"/>
+
+        <apex:outputText value="{!tList[t].Phone}"/>
+
+        <apex:outputText value="{!CRLF}"/>
+
+    </apex:repeat>
+    -->
+    
+    
+</apex:page>
