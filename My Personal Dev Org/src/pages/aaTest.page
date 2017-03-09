@@ -10,7 +10,7 @@
   </style>
  </head>
   <center>
-  <h1>Announcing New Account Name!</h1>
+  <h1>Announcing New Account Name! GITHUB DEMO</h1>
      <apex:panelGrid columns="1" width="100%">
         <apex:outputText value="{!Contact.Name}" styleClass="companyName"/>
         <apex:outputText value="{!NOW()}"></apex:outputText>
